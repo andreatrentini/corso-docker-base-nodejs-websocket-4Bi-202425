@@ -2,9 +2,13 @@
 const express = require('express');
 // Meccanismo per importare oggetti, funzioni, array dichiarati in altri file
 const config = require('./config');
+const log = require('./log');
 
 // app è una istanza di express, rappresenta la mia applicazione
 const app = express();
+
+// Aggiungo in testa ll'elaborazione della catena dei middleware la funzione log
+app.use(log);
 
 // Implemento la mia applicazione
 
@@ -14,6 +18,7 @@ app.get('/hello-world', (request, response) => {
         messaggio: 'Hello world!'
     })
 })
+
 
 /* // Esempio 2. Rspondi al client inviando un file (il meccanismo reale prevede che
 // Express apra il file html, ne legga il contenuto e lo aggiunga al body della risposta http)
