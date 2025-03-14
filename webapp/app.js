@@ -1,5 +1,7 @@
 // Dichiaro una costante che assume come valore il codice esportato dal package express
 const express = require('express');
+// Dichiaro una costante che assume come valore la libreria socket.io
+const socketio = require('socket.io');
 // Meccanismo per importare oggetti, funzioni, array dichiarati in altri file
 const config = require('./config');
 const log = require('./log');
@@ -43,4 +45,6 @@ const server = app.listen(config.port, () => {
     console.log('Server in ascolto sulla porta: ', config.port);
 })
 
+// Creare un'istanza del real time server
+const io = socketio(server);
 
