@@ -48,3 +48,17 @@ const server = app.listen(config.port, () => {
 // Creare un'istanza del real time server
 const io = socketio(server);
 
+// on ci consente di definire cosa defe fare il server quando un client chiede di stabilire una connessione.
+// il codice che il server deve eseguire va scritto nella funzione di callback.
+// socketServer è un oggetto che rimane attivo fintanto ché il client è connesso, e viene distrutto solo 
+// quando il client abbandona la pagina.
+// Attraverso socketServer il server può inviare o ricevere messaggi dal client.
+io.on(config.messaggi.connection, (socketServer) => {
+    console.log('Si è connesso un client...');
+
+    socketServer.emit(config.messaggi.welcome, 'Benvenuto nella chat. Per interagire con gli altri devi registrarti.');
+
+    socketServer.on(config.messaggi.registration, (nickname) => {
+        console.log(nickname);
+    })
+})
