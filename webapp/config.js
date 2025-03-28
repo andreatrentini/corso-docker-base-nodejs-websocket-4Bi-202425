@@ -3,7 +3,8 @@ const config = {
     messaggi: {
         connection: 'connection',
         welcome: 'welcome',
-        registration: 'registration'
+        registration: 'registration',
+        confermaRegistrazione: 'conferma-registrazione'
     }
 }
 
