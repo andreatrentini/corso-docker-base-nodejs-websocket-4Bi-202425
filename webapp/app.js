@@ -46,6 +46,7 @@ const server = app.listen(config.port, () => {
 })
 
 var utenti = [];
+var rooms = [];
 
 // Creare un'istanza del real time server
 const io = socketio(server);
@@ -61,13 +62,28 @@ io.on(config.messaggi.connection, (socketServer) => {
     socketServer.emit(config.messaggi.welcome, 'Benvenuto nella chat. Per interagire con gli altri devi registrarti.');
 
     socketServer.on(config.messaggi.registration, (nickname) => {
+        socketServer.data.nickname = nickname;
         utenti.push(nickname);
         socketServer.emit(config.messaggi.confermaRegistrazione, {
             nickname: nickname,
             messaggio: 'Avvenuta registrazione',
-            utenti: utenti
-        })
+            utenti: utenti,
+            rooms: rooms
+        });
+        socketServer.broadcast.emit(config.messaggi.nuovoUtente, {
+            messaggio: 'Un nuovo utente si è aggiunto alla chat.',
+            utenti: utenti,
+            rooms: rooms
+        });
 
         console.log(nickname);
+    })
+
+    socketServer.on(config.messaggi.creaNuovaRoom, roomName => {
+        rooms.push(roomName);
+        io.emit(config.messaggi.elencoRoom, {
+            messaggio: 'Elenco rooms aggiornato.',
+            rooms: rooms
+        })
     })
 })
